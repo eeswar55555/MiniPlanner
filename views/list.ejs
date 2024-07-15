@@ -1,0 +1,55 @@
+<%- include("header") -%>
+
+
+    <div class="box" id="heading">
+        <h1> <%= ListTitle %> </h1>
+    </div>
+
+    <div class="container">
+
+        <div class="left">
+
+            <a class="item" href="/">
+                <div class="item">
+                    <p>Today</p>
+                </div>
+            </a>
+            <% for( var i=0 ; i<every.length ; i++ ) { %>
+                <div class="item">
+                    <a href="/<%= every[i].name %>">
+                        <div class="item">
+                            <p><%= every[i].name %></p>
+                        </div>
+                    </a>
+                    <a class="del" href="/delete/<%= every[i].name %>" onclick="return confirm('Are you sure want to delete the list : <%= every[i].name %> ?')">
+                        <img class="delete" src="css/trash.png">
+                    </a>
+                </div>
+            <% } %>
+            <form action="/list/add_new" method="post" class="item">
+                <input type="text" name="newlist" placeholder="New List" id="txtinput" autocomplete="off">
+                <button type="submit">+</button>
+            </form>
+        </div>
+
+        <div class="right box">
+            <% for( var i=0 ; i<newlistitem.length ; i++ ) { %>
+                <form action="/delete" method="post">
+                    <div class="item">
+                        <input type="checkbox" name="checkbox" value="<%= newlistitem[i]._id %>" onchange="this.form.submit()">
+                        <p> <%= newlistitem[i].name %> </p>
+                    </div>
+                    <input type="hidden" name="listName" value="<%= ListTitle %>"></input>
+                </form>
+            <% } %>
+        
+            <form action="/" method="post" class="item">
+                <input type="text" name="newitem" placeholder="New Item" id="txtinput" autocomplete="off">
+                <button type="submit" name="list" value="<%= ListTitle %>">+</button>
+            </form>
+        </div>
+
+    </div>
+
+
+<%- include("footer") -%>
