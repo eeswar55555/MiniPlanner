@@ -14,7 +14,7 @@ app.use(express.static("public"));
 
 // ****************** DB ******************************************
  
-mongoose.connect('mongodb://127.0.0.1:27017/todolistDB');
+mongoose.connect('mongodb://0.0.0.0:27017/todolistDB');
 
 const itemsSchema = new mongoose.Schema({
     name : "String"
