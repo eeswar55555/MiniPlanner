@@ -26,10 +26,10 @@ const item1 = new Item({
     name : "Welcome to to do list"
 });
 const item2 = new Item({
-    name : "i♥u"
+    name : "You can tasks items here"
 });
 const item3 = new Item({
-    name : "add checkbox love♥"
+    name : "You can also add task pages"
 });
 
 const defaultitems = [item1,item2,item3];
@@ -98,7 +98,7 @@ app.get("/:customListName",function(req,res){
 
 app.post("/list/add_new",function(req,res){
     res.redirect("/"+req.body.newlist);
-})
+});
 
 app.post("/",function(req,res){
     
