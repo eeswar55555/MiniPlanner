@@ -1,5 +1,56 @@
 <%- include("header") -%>
 
+    <style>
+
+
+form#sharedListForm {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers items horizontally */
+    height: 50px;
+    gap: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* Centers the form itself if its container allows */
+    width: fit-content; /* Ensures the form's width only wraps its content */
+}
+
+form#sharedListForm input[type="text"] {
+    padding: 8px;
+    height: 50px;
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+form#sharedListForm input[type="text"]:focus {
+    border-color: #007bff;
+}
+
+form#sharedListForm button {
+    padding: 8px 12px;
+    border: none;
+    height: 30px;
+    font-size: small;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 200px;
+}
+
+form#sharedListForm button:hover {
+    background-color: #0056b3;
+}
+
+
+    </style>
 
     <div class="box" id="heading">
         <h1> <%= ListTitle %> </h1>
@@ -26,6 +77,7 @@
                     </a>
                 </div>
             <% } %>
+            
             <form action="/list/add_new" method="post" class="item">
                 <input type="text" name="newlist" placeholder="New List" id="txtinput" autocomplete="off">
                 <button type="submit">+</button>
@@ -42,6 +94,36 @@
                     <input type="hidden" name="listName" value="<%= ListTitle %>"></input>
                 </form>
             <% } %>
+
+
+
+            <!-- <% for (var i = 0; i < newlistitem.length; i++) { %>
+                <form action="/delete" method="post">
+                    <div class="item" style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center;">
+                            <input 
+                                type="checkbox" 
+                                name="checkbox" 
+                                value="<%= newlistitem[i]._id %>" 
+                                onchange="toggleCrossOut(this, '<%= newlistitem[i]._id %>')" 
+
+                                <%= newlistitem[i].flag === 1 ? 'checked' : '' %>
+                            >
+
+                            <p 
+                                style="margin-left: 8px; text-decoration: <%= newlistitem[i].flag === 1 ? 'line-through' : 'none' %>;" 
+                                id="item-text-<%= i %>"
+                            >
+                                <%= newlistitem[i].name %>
+                            </p>
+                        </div>
+                        <button type="submit">
+                            Delete
+                        </button>
+                    </div>
+                    <input type="hidden" name="listName" value="<%= ListTitle %>">
+                </form>
+            <% } %> -->
         
             <form action="/" method="post" class="item">
                 <input type="text" name="newitem" placeholder="New Item" id="txtinput" autocomplete="off">
@@ -50,6 +132,44 @@
         </div>
 
     </div>
+
+    <!-- Add this form at the top of your ejs file or HTML layout -->
+    <form id="sharedListForm" action="/t/create-shared-list" method="POST">
+        <input type="text" name="sharedUser" placeholder="Enter username for shared list" required>
+        <button type="submit">Create Shared List</button>
+    </form>
+
+    <script>
+        function toggleCrossOut(checkbox, itemId) {
+            const textElement = checkbox.parentElement.querySelector('p');
+            if (checkbox.checked) {
+                textElement.style.textDecoration = 'line-through';
+                updateFlag(itemId, 1); // Set flag to 1 when checked
+            } else {
+                textElement.style.textDecoration = 'none';
+                updateFlag(itemId, 0); // Set flag back to 0 when unchecked
+            }
+        }
+    
+        function updateFlag(itemId, flagValue) {
+            // Example of an AJAX call to update the flag value on the server
+            fetch('/updateFlag', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: itemId, flag: flagValue }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Flag updated:', data);
+            })
+            .catch(error => {
+                console.error('Error updating flag:', error);
+            });
+        }
+    </script>
+
 
 
 <%- include("footer") -%>
